@@ -18,7 +18,7 @@ The data is transformed into the desired tidy data with following actions:
 * Extracts only the measurements on the mean and standard deviation for each measurement (use 'grep' function).
 * Reads and binds the "subject" and "activity" columns into the data.
 * Merges training and testing data.
-* Create new independent tidy data set with the average of each variable for each activity and each subject.
+* Creates new independent tidy data set with the average of each variable for each activity and each subject.
 
 The transformed data has:
 * 180 observations
