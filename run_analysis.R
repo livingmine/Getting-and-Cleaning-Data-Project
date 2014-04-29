@@ -25,18 +25,21 @@ grep <- grepl(pattern="mean()|std()", names(trainingData))
 trainingData <- trainingData[, grep]
 testingData <- testingData[, grep]
 
+#Read the "activity_labes.txt" file
+labelActivity <- read.table("activity_labels.txt")
+
 #Read the "subject" and "activity" columns then bind them into the data. Do it separately for each training and testing data
 trainingSubject <- read.table(file="subject_train.txt")
 colnames(trainingSubject) <- "subject"
-trainingActivity <- read.table(file="y_train.txt")
-colnames(trainingActivity) <- "activity"
-trainingData <- cbind(trainingSubject, trainingActivity, trainingData)
+activity <- read.table(file="y_train.txt")
+activity <- labelActivity$V2[activity$V1]
+trainingData <- cbind(trainingSubject, activity, trainingData)
 
 testingSubject <- read.table(file="subject_test.txt")
 colnames(testingSubject) <- "subject"
-testingActivty <- read.table(file="y_test.txt")
-colnames(testingActivty) <- "activity"
-testingData <- cbind(testingSubject, testingActivty, testingData)
+activity <- read.table(file="y_test.txt")
+activity <- labelActivity$V2[activity$V1]
+testingData <- cbind(testingSubject, activity, testingData)
 
 
 #Merge the training and testing data into one data frame
@@ -52,7 +55,8 @@ dfrm <- data.frame()
 #variable for each activity and each subject
 
 for(x in names(group)){
-  newRow <- as.data.frame(lapply(group[[x]], mean))
+  newRow <- as.data.frame(lapply(group[[x]][,-c(1,2)], mean))
+  newRow <- cbind(group[[x]][1,c(1,2)], newRow)
   dfrm <- rbind(dfrm, newRow)  
 }
 
